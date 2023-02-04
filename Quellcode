@@ -1,0 +1,3206 @@
+namespace Scamnopoly
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+            playerTurn.Text = "Spieler 1";
+            HideEventcardE();
+            HideEventcardG();
+        }
+
+        List<string> spieler1Besitz = new List<string>(); //Eigentum von Spieler 1 wird in dieser Liste gesammelt
+        List<string> spieler2Besitz = new List<string>(); //Eigentum von Spieler 2 wird in dieser Liste gesammelt
+
+        MainMenu mainmenu = new MainMenu();
+
+        private void changeSkin1_Click(object sender, EventArgs e)  //Der Erste Spieler darf sein Skin wählen.
+        {
+            string i = skinChangeNum1.Text;
+            skinChangeNum1.Text = "0";
+
+            if (i == "0")
+            {
+                skinAmogus1.Visible = true;
+                skinChangeNum1.Text = "1";
+            }
+            else if (i == "1")
+            {
+                skinAuto1.Visible = true;
+                skinAmogus1.Visible = false;
+                skinChangeNum1.Text = "2";
+            }
+            else if (i == "2")
+            {
+                skinEiffel1.Visible = true;
+                skinAuto1.Visible = false;
+                skinAmogus1.Visible = false;
+                skinChangeNum1.Text = "3";
+            }
+            else if (i == "3")
+            {
+                skinPlane1.Visible = true;
+                skinEiffel1.Visible = false;
+                skinAuto1.Visible = false;
+                skinAmogus1.Visible = false;
+                skinChangeNum1.Text = "4";
+            }
+            else if (i == "4")
+            {
+                skinBurger1.Visible = true;
+                skinPlane1.Visible = false;
+                skinEiffel1.Visible = false;
+                skinAuto1.Visible = false;
+                skinAmogus1.Visible = false;
+                skinChangeNum1.Text = "5";
+            }
+            else if (i == "5")
+            {
+                skinSkateboard1.Visible = true;
+                skinBurger1.Visible = false;
+                skinPlane1.Visible = false;
+                skinEiffel1.Visible = false;
+                skinAuto1.Visible = false;
+                skinAmogus1.Visible = false;
+                skinChangeNum1.Text = "0";
+            }
+            else
+            {
+                skinSkateboard1.Visible = false;
+                skinBurger1.Visible = false;
+                skinPlane1.Visible = false;
+                skinEiffel1.Visible = false;
+                skinAuto1.Visible = false;
+                skinAmogus1.Visible = false;
+                skinChangeNum1.Text = "0";
+            }
+        }
+
+        private void changeSkin2_Click(object sender, EventArgs e) //Der Zweite Spieler darf sein Skin wählen.
+        {
+            string s = skinChangeNum2.Text;
+            skinChangeNum2.Text = "0";
+
+            if (s == "0")
+            {
+                skinAmogus2.Visible = true;
+                skinChangeNum2.Text = "1";
+            }
+            else if (s == "1")
+            {
+                skinAuto2.Visible = true;
+                skinAmogus2.Visible = false;
+                skinChangeNum2.Text = "2";
+            }
+            else if (s == "2")
+            {
+                skinEiffel2.Visible = true;
+                skinAuto2.Visible = false;
+                skinAmogus2.Visible = false;
+                skinChangeNum2.Text = "3";
+            }
+            else if (s == "3")
+            {
+                skinPlane2.Visible = true;
+                skinEiffel2.Visible = false;
+                skinAuto2.Visible = false;
+                skinAmogus2.Visible = false;
+                skinChangeNum2.Text = "4";
+            }
+            else if (s == "4")
+            {
+                skinBurger2.Visible = true;
+                skinPlane2.Visible = false;
+                skinEiffel2.Visible = false;
+                skinAuto2.Visible = false;
+                skinAmogus2.Visible = false;
+                skinChangeNum2.Text = "5";
+            }
+            else if (s == "5")
+            {
+                skinSkateboard2.Visible = true;
+                skinBurger2.Visible = false;
+                skinPlane2.Visible = false;
+                skinEiffel2.Visible = false;
+                skinAuto2.Visible = false;
+                skinAmogus2.Visible = false;
+                skinChangeNum2.Text = "0";
+            }
+            else
+            {
+                skinSkateboard2.Visible = false;
+                skinBurger2.Visible = false;
+                skinPlane2.Visible = false;
+                skinEiffel2.Visible = false;
+                skinAuto2.Visible = false;
+                skinAmogus2.Visible = false;
+                skinChangeNum2.Text = "0";
+            }
+        }
+
+        private void zugBeenden_Click(object sender, EventArgs e)   //Der Spieler muss sein Zug manuel beenden.
+        {
+            Hidestreetcard();
+            zugBeenden.Visible = false;
+            button1.Visible = true;
+
+            if (playerTurn.Text == "Spieler 1")  //Prüft welcher Spieler dran ist.
+            {
+                playerTurn.Text = "Spieler 2";
+                label3.Text = "2";
+            }
+            else if (playerTurn.Text == "Spieler 2")
+            {
+                playerTurn.Text = "Spieler 1";
+                label3.Text = "1";
+            }
+        }
+
+        Random würfeln1 = new Random(); //Würfel von Spieler 1
+        Random würfeln2 = new Random(); //Würfel von Spieler 2
+
+        int würfelNum1(int w1)
+        {
+            return w1;
+        }
+        int würfelNum2(int w2)
+        {
+            return w2;
+        }
+
+        private void button1_Click(object sender, EventArgs e)  //Eine zufällige Zahl wird gewürfelt.
+        {
+            int feldNummerP1;
+            int feldNummerP2;
+            Hidestreetcard();
+            HideEventcardE();
+            HideEventcardG();
+
+            if (playerTurn.Text == "Spieler 1")  //Prüft welcher Spieler dran ist.
+            {
+                int playerWürfelt1 = würfeln1.Next(2, 12);
+                int numbercounter1 = Convert.ToInt32(player1position.Text);
+                feldNummerP1 = numbercounter1 + playerWürfelt1;
+                würfelNum1(playerWürfelt1);
+                showFeldNum.Text = "" + playerWürfelt1;
+
+                player1position.Text = Convert.ToString(feldNummerP1);
+                Player1moving();                
+            }
+            else if (playerTurn.Text == "Spieler 2")
+            {
+                int playerWürfelt2 = würfeln1.Next(2, 12);
+                int numbercounter2 = Convert.ToInt32(player2position.Text);
+                feldNummerP2 = numbercounter2 + playerWürfelt2;
+                würfelNum1(playerWürfelt2);
+                showFeldNum.Text = "" + playerWürfelt2;
+
+                player2position.Text = Convert.ToString(feldNummerP2);                
+                Player2moving();                
+            }
+            PlayerPaysRent();
+            button1.Visible = false;
+            zugBeenden.Visible = true;
+        }
+
+        void Player1moving()
+        {
+            if (Convert.ToInt32(player1position.Text) >= 40)   //Spieler 1 bewegt sich zu seine Position.
+            {
+                Gehalt();
+                int surpase = Convert.ToInt32(player1position.Text) - 40;
+                player1position.Text = "" + surpase;
+
+                if (Convert.ToInt32(player1position.Text) == 0)
+                {
+                    amogusPlayer1.Location = new Point(1402, 905);
+                    planePlayer1.Location = new Point(1402, 905);
+                    eiffelPlayer1.Location = new Point(1402, 905);
+                    burgerPlayer1.Location = new Point(1402, 905);
+                    autoPlayer1.Location = new Point(1402, 905);
+                    skateboardPlayer1.Location = new Point(1402, 905);
+                }
+                else if (Convert.ToInt32(player1position.Text) == 1)
+                {
+                    amogusPlayer1.Location = new Point(1223, 905);
+                    planePlayer1.Location = new Point(1223, 905);
+                    eiffelPlayer1.Location = new Point(1223, 905);
+                    burgerPlayer1.Location = new Point(1223, 905);
+                    autoPlayer1.Location = new Point(1223, 905);
+                    skateboardPlayer1.Location = new Point(1223, 905);
+                }
+                else if (Convert.ToInt32(player1position.Text) == 2)
+                {
+                    amogusPlayer1.Location = new Point(1094, 905);
+                    planePlayer1.Location = new Point(1094, 905);
+                    eiffelPlayer1.Location = new Point(1094, 905);
+                    burgerPlayer1.Location = new Point(1094, 905);
+                    autoPlayer1.Location = new Point(1094, 905);
+                    skateboardPlayer1.Location = new Point(1094, 905);
+                }
+                else if (Convert.ToInt32(player1position.Text) == 3)
+                {
+                    amogusPlayer1.Location = new Point(970, 905);
+                    planePlayer1.Location = new Point(970, 905);
+                    eiffelPlayer1.Location = new Point(970, 905);
+                    burgerPlayer1.Location = new Point(970, 905);
+                    autoPlayer1.Location = new Point(970, 905);
+                    skateboardPlayer1.Location = new Point(970, 905);
+                }
+                else if (Convert.ToInt32(player1position.Text) == 4)
+                {
+                    amogusPlayer1.Location = new Point(844, 905);
+                    planePlayer1.Location = new Point(844, 905);
+                    eiffelPlayer1.Location = new Point(844, 905);
+                    burgerPlayer1.Location = new Point(844, 905);
+                    autoPlayer1.Location = new Point(844, 905);
+                    skateboardPlayer1.Location = new Point(844, 905);
+                }
+                else if (Convert.ToInt32(player1position.Text) == 5)
+                {
+                    amogusPlayer1.Location = new Point(721, 905);
+                    planePlayer1.Location = new Point(721, 905);
+                    eiffelPlayer1.Location = new Point(721, 905);
+                    burgerPlayer1.Location = new Point(721, 905);
+                    autoPlayer1.Location = new Point(721, 905);
+                    skateboardPlayer1.Location = new Point(721, 905);
+                }
+                else if (Convert.ToInt32(player1position.Text) == 6)
+                {
+                    amogusPlayer1.Location = new Point(594, 905);
+                    planePlayer1.Location = new Point(594, 905);
+                    eiffelPlayer1.Location = new Point(594, 905);
+                    burgerPlayer1.Location = new Point(594, 905);
+                    autoPlayer1.Location = new Point(594, 905);
+                    skateboardPlayer1.Location = new Point(594, 905);
+                }
+                else if (Convert.ToInt32(player1position.Text) == 7)
+                {
+                    amogusPlayer1.Location = new Point(471, 905);
+                    planePlayer1.Location = new Point(471, 905);
+                    eiffelPlayer1.Location = new Point(471, 905);
+                    burgerPlayer1.Location = new Point(471, 905);
+                    autoPlayer1.Location = new Point(471, 905);
+                    skateboardPlayer1.Location = new Point(471, 905);
+                }
+                else if (Convert.ToInt32(player1position.Text) == 8)
+                {
+                    amogusPlayer1.Location = new Point(346, 905);
+                    planePlayer1.Location = new Point(346, 905);
+                    eiffelPlayer1.Location = new Point(346, 905);
+                    burgerPlayer1.Location = new Point(346, 905);
+                    autoPlayer1.Location = new Point(346, 905);
+                    skateboardPlayer1.Location = new Point(346, 905);
+                }
+                else if (Convert.ToInt32(player1position.Text) == 9)
+                {
+                    amogusPlayer1.Location = new Point(226, 905);
+                    planePlayer1.Location = new Point(226, 905);
+                    eiffelPlayer1.Location = new Point(226, 905);
+                    burgerPlayer1.Location = new Point(226, 905);
+                    autoPlayer1.Location = new Point(226, 905);
+                    skateboardPlayer1.Location = new Point(226, 905);
+                }
+                else if (Convert.ToInt32(player1position.Text) == 10)
+                {
+                    amogusPlayer1.Location = new Point(22, 905);
+                    planePlayer1.Location = new Point(22, 905);
+                    eiffelPlayer1.Location = new Point(22, 905);
+                    burgerPlayer1.Location = new Point(22, 905);
+                    autoPlayer1.Location = new Point(22, 905);
+                    skateboardPlayer1.Location = new Point(22, 905);
+                }
+                else if (Convert.ToInt32(player1position.Text) == 11)
+                {
+                    amogusPlayer1.Location = new Point(116, 786);
+                    planePlayer1.Location = new Point(116, 786);
+                    eiffelPlayer1.Location = new Point(116, 786);
+                    burgerPlayer1.Location = new Point(116, 786);
+                    autoPlayer1.Location = new Point(116, 786);
+                    skateboardPlayer1.Location = new Point(116, 786);
+                }
+                else if (Convert.ToInt32(player1position.Text) == 12)
+                {
+                    amogusPlayer1.Location = new Point(116, 705);
+                    planePlayer1.Location = new Point(116, 705);
+                    eiffelPlayer1.Location = new Point(116, 705);
+                    burgerPlayer1.Location = new Point(116, 705);
+                    autoPlayer1.Location = new Point(116, 705);
+                    skateboardPlayer1.Location = new Point(116, 705);
+                }
+            }
+            else if (Convert.ToInt32(player1position.Text) == 1)
+            {
+                amogusPlayer1.Location = new Point(1223, 905);
+                planePlayer1.Location = new Point(1223, 905);
+                eiffelPlayer1.Location = new Point(1223, 905);
+                burgerPlayer1.Location = new Point(1223, 905);
+                autoPlayer1.Location = new Point(1223, 905);
+                skateboardPlayer1.Location = new Point(1223, 905);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 2)
+            {
+                amogusPlayer1.Location = new Point(1094, 905);
+                planePlayer1.Location = new Point(1094, 905);
+                eiffelPlayer1.Location = new Point(1094, 905);
+                burgerPlayer1.Location = new Point(1094, 905);
+                autoPlayer1.Location = new Point(1094, 905);
+                skateboardPlayer1.Location = new Point(1094, 905);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 3)
+            {
+                amogusPlayer1.Location = new Point(970, 905);
+                planePlayer1.Location = new Point(970, 905);
+                eiffelPlayer1.Location = new Point(970, 905);
+                burgerPlayer1.Location = new Point(970, 905);
+                autoPlayer1.Location = new Point(970, 905);
+                skateboardPlayer1.Location = new Point(970, 905);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 4)
+            {
+                amogusPlayer1.Location = new Point(844, 905);
+                planePlayer1.Location = new Point(844, 905);
+                eiffelPlayer1.Location = new Point(844, 905);
+                burgerPlayer1.Location = new Point(844, 905);
+                autoPlayer1.Location = new Point(844, 905);
+                skateboardPlayer1.Location = new Point(844, 905);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 5)
+            {
+                amogusPlayer1.Location = new Point(721, 905);
+                planePlayer1.Location = new Point(721, 905);
+                eiffelPlayer1.Location = new Point(721, 905);
+                burgerPlayer1.Location = new Point(721, 905);
+                autoPlayer1.Location = new Point(721, 905);
+                skateboardPlayer1.Location = new Point(721, 905);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 6)
+            {
+                amogusPlayer1.Location = new Point(594, 905);
+                planePlayer1.Location = new Point(594, 905);
+                eiffelPlayer1.Location = new Point(594, 905);
+                burgerPlayer1.Location = new Point(594, 905);
+                autoPlayer1.Location = new Point(594, 905);
+                skateboardPlayer1.Location = new Point(594, 905);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 7)
+            {
+                amogusPlayer1.Location = new Point(471, 905);
+                planePlayer1.Location = new Point(471, 905);
+                eiffelPlayer1.Location = new Point(471, 905);
+                burgerPlayer1.Location = new Point(471, 905);
+                autoPlayer1.Location = new Point(471, 905);
+                skateboardPlayer1.Location = new Point(471, 905);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 8)
+            {
+                amogusPlayer1.Location = new Point(346, 905);
+                planePlayer1.Location = new Point(346, 905);
+                eiffelPlayer1.Location = new Point(346, 905);
+                burgerPlayer1.Location = new Point(346, 905);
+                autoPlayer1.Location = new Point(346, 905);
+                skateboardPlayer1.Location = new Point(346, 905);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 9)
+            {
+                amogusPlayer1.Location = new Point(226, 905);
+                planePlayer1.Location = new Point(226, 905);
+                eiffelPlayer1.Location = new Point(226, 905);
+                burgerPlayer1.Location = new Point(226, 905);
+                autoPlayer1.Location = new Point(226, 905);
+                skateboardPlayer1.Location = new Point(226, 905);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 10)
+            {
+                amogusPlayer1.Location = new Point(22, 905);
+                planePlayer1.Location = new Point(22, 905);
+                eiffelPlayer1.Location = new Point(22, 905);
+                burgerPlayer1.Location = new Point(22, 905);
+                autoPlayer1.Location = new Point(22, 905);
+                skateboardPlayer1.Location = new Point(22, 905);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 11)
+            {
+                amogusPlayer1.Location = new Point(116, 786);
+                planePlayer1.Location = new Point(116, 786);
+                eiffelPlayer1.Location = new Point(116, 786);
+                burgerPlayer1.Location = new Point(116, 786);
+                autoPlayer1.Location = new Point(116, 786);
+                skateboardPlayer1.Location = new Point(116, 786);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 12)
+            {
+                amogusPlayer1.Location = new Point(116, 705);
+                planePlayer1.Location = new Point(116, 705);
+                eiffelPlayer1.Location = new Point(116, 705);
+                burgerPlayer1.Location = new Point(116, 705);
+                autoPlayer1.Location = new Point(116, 705);
+                skateboardPlayer1.Location = new Point(116, 705);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 13)
+            {
+                amogusPlayer1.Location = new Point(116, 629);
+                planePlayer1.Location = new Point(116, 629);
+                eiffelPlayer1.Location = new Point(116, 629);
+                burgerPlayer1.Location = new Point(116, 629);
+                autoPlayer1.Location = new Point(116, 629);
+                skateboardPlayer1.Location = new Point(116, 629);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 14)
+            {
+                amogusPlayer1.Location = new Point(116, 548);
+                planePlayer1.Location = new Point(116, 548);
+                eiffelPlayer1.Location = new Point(116, 548);
+                burgerPlayer1.Location = new Point(116, 548);
+                autoPlayer1.Location = new Point(116, 548);
+                skateboardPlayer1.Location = new Point(116, 548);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 15)
+            {
+                amogusPlayer1.Location = new Point(116, 463);
+                planePlayer1.Location = new Point(116, 463);
+                eiffelPlayer1.Location = new Point(116, 463);
+                burgerPlayer1.Location = new Point(116, 463);
+                autoPlayer1.Location = new Point(116, 463);
+                skateboardPlayer1.Location = new Point(116, 463);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 16)
+            {
+                amogusPlayer1.Location = new Point(116, 381);
+                planePlayer1.Location = new Point(116, 381);
+                eiffelPlayer1.Location = new Point(116, 381);
+                burgerPlayer1.Location = new Point(116, 381);
+                autoPlayer1.Location = new Point(116, 381);
+                skateboardPlayer1.Location = new Point(116, 381);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 17)
+            {
+                amogusPlayer1.Location = new Point(116, 302);
+                planePlayer1.Location = new Point(116, 302);
+                eiffelPlayer1.Location = new Point(116, 302);
+                burgerPlayer1.Location = new Point(116, 302);
+                autoPlayer1.Location = new Point(116, 302);
+                skateboardPlayer1.Location = new Point(116, 302);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 18)
+            {
+                amogusPlayer1.Location = new Point(116, 211);
+                planePlayer1.Location = new Point(116, 211);
+                eiffelPlayer1.Location = new Point(116, 211);
+                burgerPlayer1.Location = new Point(116, 211);
+                autoPlayer1.Location = new Point(116, 211);
+                skateboardPlayer1.Location = new Point(116, 211);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 19)
+            {
+                amogusPlayer1.Location = new Point(116, 142);
+                planePlayer1.Location = new Point(116, 142);
+                eiffelPlayer1.Location = new Point(116, 142);
+                burgerPlayer1.Location = new Point(116, 142);
+                autoPlayer1.Location = new Point(116, 142);
+                skateboardPlayer1.Location = new Point(116, 142);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 20)
+            {
+                amogusPlayer1.Location = new Point(116, 40);
+                planePlayer1.Location = new Point(116, 40);
+                eiffelPlayer1.Location = new Point(116, 40);
+                burgerPlayer1.Location = new Point(116, 40);
+                autoPlayer1.Location = new Point(116, 40);
+                skateboardPlayer1.Location = new Point(116, 40);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 21)
+            {
+                amogusPlayer1.Location = new Point(280, 40);
+                planePlayer1.Location = new Point(280, 40);
+                eiffelPlayer1.Location = new Point(280, 40);
+                burgerPlayer1.Location = new Point(280, 40);
+                autoPlayer1.Location = new Point(280, 40);
+                skateboardPlayer1.Location = new Point(280, 40);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 22)
+            {
+                amogusPlayer1.Location = new Point(406, 40);
+                planePlayer1.Location = new Point(406, 40);
+                eiffelPlayer1.Location = new Point(406, 40);
+                burgerPlayer1.Location = new Point(406, 40);
+                autoPlayer1.Location = new Point(406, 40);
+                skateboardPlayer1.Location = new Point(406, 40);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 23)
+            {
+                amogusPlayer1.Location = new Point(532, 40);
+                planePlayer1.Location = new Point(532, 40);
+                eiffelPlayer1.Location = new Point(532, 40);
+                burgerPlayer1.Location = new Point(532, 40);
+                autoPlayer1.Location = new Point(532, 40);
+                skateboardPlayer1.Location = new Point(532, 40);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 24)
+            {
+                amogusPlayer1.Location = new Point(655, 40);
+                planePlayer1.Location = new Point(655, 40);
+                eiffelPlayer1.Location = new Point(655, 40);
+                burgerPlayer1.Location = new Point(655, 40);
+                autoPlayer1.Location = new Point(655, 40);
+                skateboardPlayer1.Location = new Point(655, 40);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 25)
+            {
+                amogusPlayer1.Location = new Point(776, 40);
+                planePlayer1.Location = new Point(776, 40);
+                eiffelPlayer1.Location = new Point(776, 40);
+                burgerPlayer1.Location = new Point(776, 40);
+                autoPlayer1.Location = new Point(776, 40);
+                skateboardPlayer1.Location = new Point(776, 40);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 26)
+            {
+                amogusPlayer1.Location = new Point(904, 40);
+                planePlayer1.Location = new Point(904, 40);
+                eiffelPlayer1.Location = new Point(904, 40);
+                burgerPlayer1.Location = new Point(904, 40);
+                autoPlayer1.Location = new Point(904, 40);
+                skateboardPlayer1.Location = new Point(904, 40);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 27)
+            {
+                amogusPlayer1.Location = new Point(1032, 40);
+                planePlayer1.Location = new Point(1032, 40);
+                eiffelPlayer1.Location = new Point(1032, 40);
+                burgerPlayer1.Location = new Point(1032, 40);
+                autoPlayer1.Location = new Point(1032, 40);
+                skateboardPlayer1.Location = new Point(1032, 40);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 28)
+            {
+                amogusPlayer1.Location = new Point(1152, 40);
+                planePlayer1.Location = new Point(1152, 40);
+                eiffelPlayer1.Location = new Point(1152, 40);
+                burgerPlayer1.Location = new Point(1152, 40);
+                autoPlayer1.Location = new Point(1152, 40);
+                skateboardPlayer1.Location = new Point(1152, 40);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 29)
+            {
+                amogusPlayer1.Location = new Point(1274, 40);
+                planePlayer1.Location = new Point(1274, 40);
+                eiffelPlayer1.Location = new Point(1274, 40);
+                burgerPlayer1.Location = new Point(1274, 40);
+                autoPlayer1.Location = new Point(1274, 40);
+                skateboardPlayer1.Location = new Point(1274, 40);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 30)
+            {
+                amogusPlayer1.Location = new Point(1456, 40);
+                planePlayer1.Location = new Point(1456, 40);
+                eiffelPlayer1.Location = new Point(1456, 40);
+                burgerPlayer1.Location = new Point(1456, 40);
+                autoPlayer1.Location = new Point(1456, 40);
+                skateboardPlayer1.Location = new Point(1456, 40);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 31)
+            {
+                amogusPlayer1.Location = new Point(1456, 139);
+                planePlayer1.Location = new Point(1456, 139);
+                eiffelPlayer1.Location = new Point(1456, 139);
+                burgerPlayer1.Location = new Point(1456, 139);
+                autoPlayer1.Location = new Point(1456, 139);
+                skateboardPlayer1.Location = new Point(1456, 139);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 32)
+            {
+                amogusPlayer1.Location = new Point(1456, 221);
+                planePlayer1.Location = new Point(1456, 221);
+                eiffelPlayer1.Location = new Point(1456, 221);
+                burgerPlayer1.Location = new Point(1456, 221);
+                autoPlayer1.Location = new Point(1456, 221);
+                skateboardPlayer1.Location = new Point(1456, 221);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 33)
+            {
+                amogusPlayer1.Location = new Point(1456, 292);
+                planePlayer1.Location = new Point(1456, 292);
+                eiffelPlayer1.Location = new Point(1456, 292);
+                burgerPlayer1.Location = new Point(1456, 292);
+                autoPlayer1.Location = new Point(1456, 292);
+                skateboardPlayer1.Location = new Point(1456, 292);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 34)
+            {
+                amogusPlayer1.Location = new Point(1456, 383);
+                planePlayer1.Location = new Point(1456, 383);
+                eiffelPlayer1.Location = new Point(1456, 383);
+                burgerPlayer1.Location = new Point(1456, 383);
+                autoPlayer1.Location = new Point(1456, 383);
+                skateboardPlayer1.Location = new Point(1456, 383);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 35)
+            {
+                amogusPlayer1.Location = new Point(1456, 459);
+                planePlayer1.Location = new Point(1456, 459);
+                eiffelPlayer1.Location = new Point(1456, 459);
+                burgerPlayer1.Location = new Point(1456, 459);
+                autoPlayer1.Location = new Point(1456, 459);
+                skateboardPlayer1.Location = new Point(1456, 459);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 36)
+            {
+                amogusPlayer1.Location = new Point(1456, 541);
+                planePlayer1.Location = new Point(1456, 541);
+                eiffelPlayer1.Location = new Point(1456, 541);
+                burgerPlayer1.Location = new Point(1456, 541);
+                autoPlayer1.Location = new Point(1456, 541);
+                skateboardPlayer1.Location = new Point(1456, 541);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 37)
+            {
+                amogusPlayer1.Location = new Point(1456, 622);
+                planePlayer1.Location = new Point(1456, 622);
+                eiffelPlayer1.Location = new Point(1456, 622);
+                burgerPlayer1.Location = new Point(1456, 622);
+                autoPlayer1.Location = new Point(1456, 622);
+                skateboardPlayer1.Location = new Point(1456, 622);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 38)
+            {
+                amogusPlayer1.Location = new Point(1456, 699);
+                planePlayer1.Location = new Point(1456, 699);
+                eiffelPlayer1.Location = new Point(1456, 699);
+                burgerPlayer1.Location = new Point(1456, 699);
+                autoPlayer1.Location = new Point(1456, 699);
+                skateboardPlayer1.Location = new Point(1456, 699);
+            }
+            else if (Convert.ToInt32(player1position.Text) == 39)
+            {
+                amogusPlayer1.Location = new Point(1456, 787);
+                planePlayer1.Location = new Point(1456, 787);
+                eiffelPlayer1.Location = new Point(1456, 787);
+                burgerPlayer1.Location = new Point(1456, 787);
+                autoPlayer1.Location = new Point(1456, 787);
+                skateboardPlayer1.Location = new Point(1456, 787);
+            }
+
+            PlayEventOnField();
+        }
+
+        void Player2moving()
+        {
+            if (Convert.ToInt32(player2position.Text) >= 40)   //Spieler 2 bewegt sich zu seine Position.
+            {
+                Gehalt();
+                int surpase = Convert.ToInt32(player2position.Text) - 40;
+                player2position.Text = "" + surpase;
+                
+                if(Convert.ToInt32(player2position.Text) == 0)
+                {
+                    amogusPlayer2.Location = new Point(1436, 905);
+                    planePlayer2.Location = new Point(1436, 905);
+                    eiffelPlayer2.Location = new Point(1436, 905);
+                    burgerPlayer2.Location = new Point(1436, 905);
+                    autoPlayer2.Location = new Point(1436, 905);
+                    skateboardPlayer2.Location = new Point(1436, 905);
+                }
+                else if (Convert.ToInt32(player2position.Text) == 1)
+                {
+                    amogusPlayer2.Location = new Point(1270, 905);
+                    planePlayer2.Location = new Point(1270, 905);
+                    eiffelPlayer2.Location = new Point(1270, 905);
+                    burgerPlayer2.Location = new Point(1270, 905);
+                    autoPlayer2.Location = new Point(1270, 905);
+                    skateboardPlayer2.Location = new Point(1270, 905);
+                }
+                else if (Convert.ToInt32(player2position.Text) == 2)
+                {
+                    amogusPlayer2.Location = new Point(1150, 905);
+                    planePlayer2.Location = new Point(1150, 905);
+                    eiffelPlayer2.Location = new Point(1150, 905);
+                    burgerPlayer2.Location = new Point(1150, 905);
+                    autoPlayer2.Location = new Point(1150, 905);
+                    skateboardPlayer2.Location = new Point(1150, 905);
+                }
+                else if (Convert.ToInt32(player2position.Text) == 3)
+                {
+                    amogusPlayer2.Location = new Point(1030, 905);
+                    planePlayer2.Location = new Point(1030, 905);
+                    eiffelPlayer2.Location = new Point(1030, 905);
+                    burgerPlayer2.Location = new Point(1030, 905);
+                    autoPlayer2.Location = new Point(1030, 905);
+                    skateboardPlayer2.Location = new Point(1030, 905);
+                }
+                else if (Convert.ToInt32(player2position.Text) == 4)
+                {
+                    amogusPlayer2.Location = new Point(910, 905);
+                    planePlayer2.Location = new Point(910, 905);
+                    eiffelPlayer2.Location = new Point(910, 905);
+                    burgerPlayer2.Location = new Point(910, 905);
+                    autoPlayer2.Location = new Point(910, 905);
+                    skateboardPlayer2.Location = new Point(910, 905);
+                }
+                else if (Convert.ToInt32(player2position.Text) == 5)
+                {
+                    amogusPlayer2.Location = new Point(780, 905);
+                    planePlayer2.Location = new Point(780, 905);
+                    eiffelPlayer2.Location = new Point(780, 905);
+                    burgerPlayer2.Location = new Point(780, 905);
+                    autoPlayer2.Location = new Point(780, 905);
+                    skateboardPlayer2.Location = new Point(780, 905);
+                }
+                else if (Convert.ToInt32(player2position.Text) == 6)
+                {
+                    amogusPlayer2.Location = new Point(655, 905);
+                    planePlayer2.Location = new Point(655, 905);
+                    eiffelPlayer2.Location = new Point(655, 905);
+                    burgerPlayer2.Location = new Point(655, 905);
+                    autoPlayer2.Location = new Point(655, 905);
+                    skateboardPlayer2.Location = new Point(655, 905);
+                }
+                else if (Convert.ToInt32(player2position.Text) == 7)
+                {
+                    amogusPlayer2.Location = new Point(530, 905);
+                    planePlayer2.Location = new Point(530, 905);
+                    eiffelPlayer2.Location = new Point(530, 905);
+                    burgerPlayer2.Location = new Point(530, 905);
+                    autoPlayer2.Location = new Point(530, 905);
+                    skateboardPlayer2.Location = new Point(530, 905);
+                }
+                else if (Convert.ToInt32(player2position.Text) == 8)
+                {
+                    amogusPlayer2.Location = new Point(410, 905);
+                    planePlayer2.Location = new Point(410, 905);
+                    eiffelPlayer2.Location = new Point(410, 905);
+                    burgerPlayer2.Location = new Point(410, 905);
+                    autoPlayer2.Location = new Point(410, 905);
+                    skateboardPlayer2.Location = new Point(410, 905);
+                }
+                else if (Convert.ToInt32(player2position.Text) == 9)
+                {
+                    amogusPlayer2.Location = new Point(285, 905);
+                    planePlayer2.Location = new Point(285, 905);
+                    eiffelPlayer2.Location = new Point(285, 905);
+                    burgerPlayer2.Location = new Point(285, 905);
+                    autoPlayer2.Location = new Point(285, 905);
+                    skateboardPlayer2.Location = new Point(285, 905);
+                }
+                else if (Convert.ToInt32(player2position.Text) == 10)
+                {
+                    amogusPlayer2.Location = new Point(100, 936);
+                    planePlayer2.Location = new Point(100, 936);
+                    eiffelPlayer2.Location = new Point(100, 936);
+                    burgerPlayer2.Location = new Point(100, 936);
+                    autoPlayer2.Location = new Point(100, 936);
+                    skateboardPlayer2.Location = new Point(100, 936);
+                }
+                else if (Convert.ToInt32(player2position.Text) == 11)
+                {
+                    amogusPlayer2.Location = new Point(48, 786);
+                    planePlayer2.Location = new Point(48, 786);
+                    eiffelPlayer2.Location = new Point(48, 786);
+                    burgerPlayer2.Location = new Point(48, 786);
+                    autoPlayer2.Location = new Point(48, 786);
+                    skateboardPlayer2.Location = new Point(48, 786);
+                }
+                else if (Convert.ToInt32(player2position.Text) == 12)
+                {
+                    amogusPlayer2.Location = new Point(48, 705);
+                    planePlayer2.Location = new Point(48, 705);
+                    eiffelPlayer2.Location = new Point(48, 705);
+                    burgerPlayer2.Location = new Point(48, 705);
+                    autoPlayer2.Location = new Point(48, 705);
+                    skateboardPlayer2.Location = new Point(48, 705);
+                }
+            }
+            else if (Convert.ToInt32(player2position.Text) == 1)
+            {
+                amogusPlayer2.Location = new Point(1270, 905);
+                planePlayer2.Location = new Point(1270, 905);
+                eiffelPlayer2.Location = new Point(1270, 905);
+                burgerPlayer2.Location = new Point(1270, 905);
+                autoPlayer2.Location = new Point(1270, 905);
+                skateboardPlayer2.Location = new Point(1270, 905);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 2)
+            {
+                amogusPlayer2.Location = new Point(1150, 905);
+                planePlayer2.Location = new Point(1150, 905);
+                eiffelPlayer2.Location = new Point(1150, 905);
+                burgerPlayer2.Location = new Point(1150, 905);
+                autoPlayer2.Location = new Point(1150, 905);
+                skateboardPlayer2.Location = new Point(1150, 905);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 3)
+            {
+                amogusPlayer2.Location = new Point(1030, 905);
+                planePlayer2.Location = new Point(1030, 905);
+                eiffelPlayer2.Location = new Point(1030, 905);
+                burgerPlayer2.Location = new Point(1030, 905);
+                autoPlayer2.Location = new Point(1030, 905);
+                skateboardPlayer2.Location = new Point(1030, 905);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 4)
+            {
+                amogusPlayer2.Location = new Point(910, 905);
+                planePlayer2.Location = new Point(910, 905);
+                eiffelPlayer2.Location = new Point(910, 905);
+                burgerPlayer2.Location = new Point(910, 905);
+                autoPlayer2.Location = new Point(910, 905);
+                skateboardPlayer2.Location = new Point(910, 905);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 5)
+            {
+                amogusPlayer2.Location = new Point(780, 905);
+                planePlayer2.Location = new Point(780, 905);
+                eiffelPlayer2.Location = new Point(780, 905);
+                burgerPlayer2.Location = new Point(780, 905);
+                autoPlayer2.Location = new Point(780, 905);
+                skateboardPlayer2.Location = new Point(780, 905);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 6)
+            {
+                amogusPlayer2.Location = new Point(655, 905);
+                planePlayer2.Location = new Point(655, 905);
+                eiffelPlayer2.Location = new Point(655, 905);
+                burgerPlayer2.Location = new Point(655, 905);
+                autoPlayer2.Location = new Point(655, 905);
+                skateboardPlayer2.Location = new Point(655, 905);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 7)
+            {
+                amogusPlayer2.Location = new Point(530, 905);
+                planePlayer2.Location = new Point(530, 905);
+                eiffelPlayer2.Location = new Point(530, 905);
+                burgerPlayer2.Location = new Point(530, 905);
+                autoPlayer2.Location = new Point(530, 905);
+                skateboardPlayer2.Location = new Point(530, 905);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 8)
+            {
+                amogusPlayer2.Location = new Point(410, 905);
+                planePlayer2.Location = new Point(410, 905);
+                eiffelPlayer2.Location = new Point(410, 905);
+                burgerPlayer2.Location = new Point(410, 905);
+                autoPlayer2.Location = new Point(410, 905);
+                skateboardPlayer2.Location = new Point(410, 905);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 9)
+            {
+                amogusPlayer2.Location = new Point(285, 905);
+                planePlayer2.Location = new Point(285, 905);
+                eiffelPlayer2.Location = new Point(285, 905);
+                burgerPlayer2.Location = new Point(285, 905);
+                autoPlayer2.Location = new Point(285, 905);
+                skateboardPlayer2.Location = new Point(285, 905);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 10)
+            {
+                amogusPlayer2.Location = new Point(100, 936);
+                planePlayer2.Location = new Point(100, 936);
+                eiffelPlayer2.Location = new Point(100, 936);
+                burgerPlayer2.Location = new Point(100, 936);
+                autoPlayer2.Location = new Point(100, 936);
+                skateboardPlayer2.Location = new Point(100, 936);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 11)
+            {
+                amogusPlayer2.Location = new Point(48, 786);
+                planePlayer2.Location = new Point(48, 786);
+                eiffelPlayer2.Location = new Point(48, 786);
+                burgerPlayer2.Location = new Point(48, 786);
+                autoPlayer2.Location = new Point(48, 786);
+                skateboardPlayer2.Location = new Point(48, 786);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 12)
+            {
+                amogusPlayer2.Location = new Point(48, 705);
+                planePlayer2.Location = new Point(48, 705);
+                eiffelPlayer2.Location = new Point(48, 705);
+                burgerPlayer2.Location = new Point(48, 705);
+                autoPlayer2.Location = new Point(48, 705);
+                skateboardPlayer2.Location = new Point(48, 705);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 13)
+            {
+                amogusPlayer2.Location = new Point(48, 629);
+                planePlayer2.Location = new Point(48, 629);
+                eiffelPlayer2.Location = new Point(48, 629);
+                burgerPlayer2.Location = new Point(48, 629);
+                autoPlayer2.Location = new Point(48, 629);
+                skateboardPlayer2.Location = new Point(48, 629);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 14)
+            {
+                amogusPlayer2.Location = new Point(48, 548);
+                planePlayer2.Location = new Point(48, 548);
+                eiffelPlayer2.Location = new Point(48, 548);
+                burgerPlayer2.Location = new Point(48, 548);
+                autoPlayer2.Location = new Point(48, 548);
+                skateboardPlayer2.Location = new Point(48, 548);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 15)
+            {
+                amogusPlayer2.Location = new Point(48, 463);
+                planePlayer2.Location = new Point(48, 463);
+                eiffelPlayer2.Location = new Point(48, 463);
+                burgerPlayer2.Location = new Point(48, 463);
+                autoPlayer2.Location = new Point(48, 463);
+                skateboardPlayer2.Location = new Point(48, 463);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 16)
+            {
+                amogusPlayer2.Location = new Point(48, 381);
+                planePlayer2.Location = new Point(48, 381);
+                eiffelPlayer2.Location = new Point(48, 381);
+                burgerPlayer2.Location = new Point(48, 381);
+                autoPlayer2.Location = new Point(48, 381);
+                skateboardPlayer2.Location = new Point(48, 381);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 17)
+            {
+                amogusPlayer2.Location = new Point(48, 302);
+                planePlayer2.Location = new Point(48, 302);
+                eiffelPlayer2.Location = new Point(48, 302);
+                burgerPlayer2.Location = new Point(48, 302);
+                autoPlayer2.Location = new Point(48, 302);
+                skateboardPlayer2.Location = new Point(48, 302);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 18)
+            {
+                amogusPlayer2.Location = new Point(48, 211);
+                planePlayer2.Location = new Point(48, 211);
+                eiffelPlayer2.Location = new Point(48, 211);
+                burgerPlayer2.Location = new Point(48, 211);
+                autoPlayer2.Location = new Point(48, 211);
+                skateboardPlayer2.Location = new Point(48, 211);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 19)
+            {
+                amogusPlayer2.Location = new Point(48, 142);
+                planePlayer2.Location = new Point(48, 142);
+                eiffelPlayer2.Location = new Point(48, 142);
+                burgerPlayer2.Location = new Point(48, 142);
+                autoPlayer2.Location = new Point(48, 142);
+                skateboardPlayer2.Location = new Point(48, 142);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 20) //Test
+            {
+                amogusPlayer2.Location = new Point(48, 40);
+                planePlayer2.Location = new Point(48, 40);
+                eiffelPlayer2.Location = new Point(48, 40);
+                burgerPlayer2.Location = new Point(48, 40);
+                autoPlayer2.Location = new Point(48, 40);
+                skateboardPlayer2.Location = new Point(48, 40);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 21)
+            {
+                amogusPlayer2.Location = new Point(220, 40);
+                planePlayer2.Location = new Point(220, 40);
+                eiffelPlayer2.Location = new Point(220, 40);
+                burgerPlayer2.Location = new Point(220, 40);
+                autoPlayer2.Location = new Point(220, 40);
+                skateboardPlayer2.Location = new Point(220, 40);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 22)
+            {
+                amogusPlayer2.Location = new Point(346, 40);
+                planePlayer2.Location = new Point(346, 40);
+                eiffelPlayer2.Location = new Point(346, 40);
+                burgerPlayer2.Location = new Point(346, 40);
+                autoPlayer2.Location = new Point(346, 40);
+                skateboardPlayer2.Location = new Point(346, 40);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 23)
+            {
+                amogusPlayer2.Location = new Point(472, 40);
+                planePlayer2.Location = new Point(472, 40);
+                eiffelPlayer2.Location = new Point(472, 40);
+                burgerPlayer2.Location = new Point(472, 40);
+                autoPlayer2.Location = new Point(472, 40);
+                skateboardPlayer2.Location = new Point(472, 40);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 24)
+            {
+                amogusPlayer2.Location = new Point(595, 40);
+                planePlayer2.Location = new Point(595, 40);
+                eiffelPlayer2.Location = new Point(595, 40);
+                burgerPlayer2.Location = new Point(595, 40);
+                autoPlayer2.Location = new Point(595, 40);
+                skateboardPlayer2.Location = new Point(595, 40);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 25)
+            {
+                amogusPlayer2.Location = new Point(716, 40);
+                planePlayer2.Location = new Point(716, 40);
+                eiffelPlayer2.Location = new Point(716, 40);
+                burgerPlayer2.Location = new Point(716, 40);
+                autoPlayer2.Location = new Point(716, 40);
+                skateboardPlayer2.Location = new Point(716, 40);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 26)
+            {
+                amogusPlayer2.Location = new Point(844, 40);
+                planePlayer2.Location = new Point(844, 40);
+                eiffelPlayer2.Location = new Point(844, 40);
+                burgerPlayer2.Location = new Point(844, 40);
+                autoPlayer2.Location = new Point(844, 40);
+                skateboardPlayer2.Location = new Point(844, 40);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 27)
+            {
+                amogusPlayer2.Location = new Point(972, 40);
+                planePlayer2.Location = new Point(972, 40);
+                eiffelPlayer2.Location = new Point(972, 40);
+                burgerPlayer2.Location = new Point(972, 40);
+                autoPlayer2.Location = new Point(972, 40);
+                skateboardPlayer2.Location = new Point(972, 40);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 28)
+            {
+                amogusPlayer2.Location = new Point(1092, 40);
+                planePlayer2.Location = new Point(1092, 40);
+                eiffelPlayer2.Location = new Point(1092, 40);
+                burgerPlayer2.Location = new Point(1092, 40);
+                autoPlayer2.Location = new Point(1092, 40);
+                skateboardPlayer2.Location = new Point(1092, 40);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 29)
+            {
+                amogusPlayer2.Location = new Point(1214, 40);
+                planePlayer2.Location = new Point(1214, 40);
+                eiffelPlayer2.Location = new Point(1214, 40);
+                burgerPlayer2.Location = new Point(1214, 40);
+                autoPlayer2.Location = new Point(1214, 40);
+                skateboardPlayer2.Location = new Point(1214, 40);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 30)
+            {
+                amogusPlayer2.Location = new Point(1396, 40);
+                planePlayer2.Location = new Point(1396, 40);
+                eiffelPlayer2.Location = new Point(1396, 40);
+                burgerPlayer2.Location = new Point(1396, 40);
+                autoPlayer2.Location = new Point(1396, 40);
+                skateboardPlayer2.Location = new Point(1396, 40);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 31)
+            {
+                amogusPlayer2.Location = new Point(1396, 139);
+                planePlayer2.Location = new Point(1396, 139);
+                eiffelPlayer2.Location = new Point(1396, 139);
+                burgerPlayer2.Location = new Point(1396, 139);
+                autoPlayer2.Location = new Point(1396, 139);
+                skateboardPlayer2.Location = new Point(1396, 139);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 32)
+            {
+                amogusPlayer2.Location = new Point(1396, 221);
+                planePlayer2.Location = new Point(1396, 221);
+                eiffelPlayer2.Location = new Point(1396, 221);
+                burgerPlayer2.Location = new Point(1396, 221);
+                autoPlayer2.Location = new Point(1396, 221);
+                skateboardPlayer2.Location = new Point(1396, 221);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 33)
+            {
+                amogusPlayer2.Location = new Point(1396, 292);
+                planePlayer2.Location = new Point(1396, 292);
+                eiffelPlayer2.Location = new Point(1396, 292);
+                burgerPlayer2.Location = new Point(1396, 292);
+                autoPlayer2.Location = new Point(1396, 292);
+                skateboardPlayer2.Location = new Point(1396, 292);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 34)
+            {
+                amogusPlayer2.Location = new Point(1396, 383);
+                planePlayer2.Location = new Point(1396, 383);
+                eiffelPlayer2.Location = new Point(1396, 383);
+                burgerPlayer2.Location = new Point(1396, 383);
+                autoPlayer2.Location = new Point(1396, 383);
+                skateboardPlayer2.Location = new Point(1396, 383);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 35)
+            {
+                amogusPlayer2.Location = new Point(1396, 459);
+                planePlayer2.Location = new Point(1396, 459);
+                eiffelPlayer2.Location = new Point(1396, 459);
+                burgerPlayer2.Location = new Point(1396, 459);
+                autoPlayer2.Location = new Point(1396, 459);
+                skateboardPlayer2.Location = new Point(1396, 459);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 36)
+            {
+                amogusPlayer2.Location = new Point(1396, 541);
+                planePlayer2.Location = new Point(1396, 541);
+                eiffelPlayer2.Location = new Point(1396, 541);
+                burgerPlayer2.Location = new Point(1396, 541);
+                autoPlayer2.Location = new Point(1396, 541);
+                skateboardPlayer2.Location = new Point(1396, 541);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 37)
+            {
+                amogusPlayer2.Location = new Point(1396, 622);
+                planePlayer2.Location = new Point(1396, 622);
+                eiffelPlayer2.Location = new Point(1396, 622);
+                burgerPlayer2.Location = new Point(1396, 622);
+                autoPlayer2.Location = new Point(1396, 622);
+                skateboardPlayer2.Location = new Point(1396, 622);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 38)
+            {
+                amogusPlayer2.Location = new Point(1396, 699);
+                planePlayer2.Location = new Point(1396, 699);
+                eiffelPlayer2.Location = new Point(1396, 699);
+                burgerPlayer2.Location = new Point(1396, 699);
+                autoPlayer2.Location = new Point(1396, 699);
+                skateboardPlayer2.Location = new Point(1396, 699);
+            }
+            else if (Convert.ToInt32(player2position.Text) == 39)
+            {
+                amogusPlayer2.Location = new Point(1396, 787);
+                planePlayer2.Location = new Point(1396, 787);
+                eiffelPlayer2.Location = new Point(1396, 787);
+                burgerPlayer2.Location = new Point(1396, 787);
+                autoPlayer2.Location = new Point(1396, 787);
+                skateboardPlayer2.Location = new Point(1396, 787);
+            }
+
+            PlayEventOnField();
+        }
+
+        private void bttnStart_Click(object sender, EventArgs e) //Startet das Spiel.
+        {
+            Hidestreetcard();
+            button1.Visible = true;
+            bttnStart.Visible = false;
+            changeSkin1.Visible = false;
+            changeSkin2.Visible = false;
+
+            Checkskin1();
+            Checkskin2();
+        }
+
+        void Checkskin1() //Überprüft welcher Skin von Spieler 1 verwendet wird.
+        {
+            if (skinAmogus1.Visible)
+            {
+                amogusPlayer1.Visible = true;
+            }
+            else if (skinAuto1.Visible)
+            {
+                autoPlayer1.Visible = true;
+            }
+            else if (skinBurger1.Visible)
+            {
+                burgerPlayer1.Visible = true;
+            }
+            else if (skinEiffel1.Visible)
+            {
+                eiffelPlayer1.Visible = true;
+            }
+            else if (skinPlane1.Visible)
+            {
+                planePlayer1.Visible = true;
+            }
+            else if (skinSkateboard1.Visible)
+            {
+                skateboardPlayer1.Visible = true;
+            }
+        }
+
+        void Checkskin2() //Überprüft welcher Skin von Spieler 2 verwendet wird.
+        {
+            if (skinAmogus2.Visible)
+            {
+                amogusPlayer2.Visible = true;
+            }
+            else if (skinAuto2.Visible)
+            {
+                autoPlayer2.Visible = true;
+            }
+            else if (skinBurger2.Visible)
+            {
+                burgerPlayer2.Visible = true;
+            }
+            else if (skinEiffel2.Visible)
+            {
+                eiffelPlayer2.Visible = true;
+            }
+            else if (skinPlane2.Visible)
+            {
+                planePlayer2.Visible = true;
+            }
+            else if (skinSkateboard2.Visible)
+            {
+                skateboardPlayer2.Visible = true;
+            }
+        }
+
+        void Hidestreetcard()  //Macht alle Karten unsichtbar.
+        {
+            StraßeBraun1.Visible = false;
+            StraßeBraun2.Visible = false;
+            StraßeGelb1.Visible = false;
+            StraßeGelb2.Visible = false;
+            StraßeGelb3.Visible = false;
+            StraßeRot1.Visible = false;
+            StraßeRot2.Visible = false;
+            StraßeRot3.Visible = false;
+            StraßeTürkis1.Visible = false;
+            StraßeTürkis2.Visible = false;
+            StraßeTürkis3.Visible = false;
+            StraßePink1.Visible = false;
+            StraßePink2.Visible = false;
+            StraßePink3.Visible = false;
+            Südbahnhof.Visible = false;
+            Hauptbahnhof.Visible = false;
+            Westbahnhof.Visible = false;
+            Nordbahnhof.Visible = false;
+            StraßeOrange1.Visible = false;
+            StraßeOrange2.Visible = false;
+            StraßeOrange3.Visible = false;
+            StraßeBlau1.Visible = false;
+            StraßeBlau2.Visible = false;
+            StraßeGreen1.Visible = false;
+            StraßeGreen2.Visible = false;
+            StraßeGreen3.Visible = false;
+            Wasserwerk.Visible = false;
+            Elektrizitätswerk.Visible = false;
+        }
+
+        void PlayEventOnField() //Der Spieler löst auf das gelandete Feld ein Event aus.
+        {
+            if (playerTurn.Text == "Spieler 2") //Überprüft zuerst welcher Spieler dran ist.
+            {
+                if (Convert.ToInt32(player2position.Text) == 1) //Überprüft jetzt wo sich der Spieler befindet.
+                {
+                    StraßeBraun1.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 2)
+                {
+                    ShowEventcardE();
+                }
+                else if (Convert.ToInt32(player2position.Text) == 3)
+                {
+                    StraßeBraun2.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 4)
+                {
+                    if (Convert.ToInt32(player2position.Text) == 4)
+                    {
+                        MessageBox.Show("Dein Einkommen wird versteuert! Du zahlst 200$");
+
+                        int P2money = Convert.ToInt32(Player2Money.Text) - 200;
+                        Player2Money.Text = "" + P2money;
+                    }
+                    else
+                    {
+
+                    }
+                }
+                else if (Convert.ToInt32(player2position.Text) == 5)
+                {
+                    Südbahnhof.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 6)
+                {
+                    StraßeTürkis1.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 7)
+                {
+                    ShowEventcardG();
+                }
+                else if (Convert.ToInt32(player2position.Text) == 8)
+                {
+                    StraßeTürkis2.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 9)
+                {
+                    StraßeTürkis3.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 10)
+                {
+
+                }
+                else if (Convert.ToInt32(player2position.Text) == 11)
+                {
+                    StraßePink1.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 12)
+                {
+                    Elektrizitätswerk.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 13)
+                {
+                    StraßePink2.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 14)
+                {
+                    StraßePink2.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 15)
+                {
+                    Westbahnhof.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 16)
+                {
+                    StraßeOrange1.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 17)
+                {
+                    ShowEventcardG();
+                }
+                else if (Convert.ToInt32(player2position.Text) == 18)
+                {
+                    StraßeOrange2.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 19)
+                {
+                    StraßeOrange3.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 20)
+                {
+                    
+                }
+                else if (Convert.ToInt32(player2position.Text) == 21)
+                {
+                    StraßeRot1.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 22)
+                {
+                    ShowEventcardE();
+                }
+                else if (Convert.ToInt32(player2position.Text) == 23)
+                {
+                    StraßeRot2.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 24)
+                {
+                    StraßeRot3.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 25)
+                {
+                    Nordbahnhof.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 26)
+                {
+                    StraßeGelb1.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 27)
+                {
+                    StraßeGelb2.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 28)
+                {
+                    Wasserwerk.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 29)
+                {
+                    StraßeGelb3.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 30)
+                {
+
+                }
+                else if (Convert.ToInt32(player2position.Text) == 31)
+                {
+                    StraßeGreen1.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 32)
+                {
+                    StraßeGreen2.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 33)
+                {
+                    ShowEventcardG();
+                }
+                else if (Convert.ToInt32(player2position.Text) == 34)
+                {
+                    StraßeGreen3.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 35)
+                {
+                    Hauptbahnhof.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 36)
+                {
+                    ShowEventcardE();
+                }
+                else if (Convert.ToInt32(player2position.Text) == 37)
+                {
+                    StraßeBlau1.Visible = true;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 38)
+                {
+                    MessageBox.Show("Du hast Schulden! Du zahlst 100$");
+                    int P2money = Convert.ToInt32(Player2Money.Text) - 100;
+                    Player2Money.Text = "" + P2money;
+                }
+                else if (Convert.ToInt32(player2position.Text) == 39)
+                {
+                    StraßeBlau2.Visible = true;
+                }
+            }
+            else if (playerTurn.Text == "Spieler 1")
+            {
+                if (Convert.ToInt32(player1position.Text) == 1)
+                {
+                    StraßeBraun1.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 2)
+                {
+                    ShowEventcardE();
+                }
+                else if (Convert.ToInt32(player1position.Text) == 3)
+                {
+                    StraßeBraun2.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 4)
+                {
+                    if (Convert.ToInt32(player2position.Text) == 4)
+                    {
+                        MessageBox.Show("Dein Einkommen wird versteuert! Du zahlst 200$");
+
+                        int P2money = Convert.ToInt32(Player2Money.Text) - 200;
+                        Player2Money.Text = "" + P2money;
+                    }
+                    else
+                    {
+
+                    }
+                }
+                else if (Convert.ToInt32(player1position.Text) == 5)
+                {
+                    Südbahnhof.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 6)
+                {
+                    StraßeTürkis1.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 7)
+                {
+                    ShowEventcardG();
+                }
+                else if (Convert.ToInt32(player1position.Text) == 8)
+                {
+                    StraßeTürkis2.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 9)
+                {
+                    StraßeTürkis3.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 10)
+                {
+
+                }
+                else if (Convert.ToInt32(player1position.Text) == 11)
+                {
+                    StraßePink1.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 12)
+                {
+                    Elektrizitätswerk.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 13)
+                {
+                    StraßePink2.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 14)
+                {
+                    StraßePink3.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 15)
+                {
+                    Westbahnhof.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 16)
+                {
+                    StraßeOrange1.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 17)
+                {
+                    ShowEventcardG();
+                }
+                else if (Convert.ToInt32(player1position.Text) == 18)
+                {
+                    StraßeOrange2.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 19)
+                {
+                    StraßeOrange3.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 20)
+                {
+                    
+                }
+                else if (Convert.ToInt32(player1position.Text) == 21)
+                {
+                    StraßeRot1.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 22)
+                {
+                    ShowEventcardE();
+                }
+                else if (Convert.ToInt32(player1position.Text) == 23)
+                {
+                    StraßeRot2.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 24)
+                {
+                    StraßeRot3.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 25)
+                {
+                    Nordbahnhof.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 26)
+                {
+                    StraßeGelb1.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 27)
+                {
+                    StraßeGelb2.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 28)
+                {
+                    Wasserwerk.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 29)
+                {
+                    StraßeGelb3.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 30)
+                {
+
+                }
+                else if (Convert.ToInt32(player1position.Text) == 31)
+                {
+                    StraßeGreen1.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 32)
+                {
+                    StraßeGreen2.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 33)
+                {
+                    ShowEventcardG();
+                }
+                else if (Convert.ToInt32(player1position.Text) == 34)
+                {
+                    StraßeGreen3.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 35)
+                {
+                    Hauptbahnhof.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 36)
+                {
+                    ShowEventcardE();
+                }
+                else if (Convert.ToInt32(player1position.Text) == 37)
+                {
+                    StraßeBlau1.Visible = true;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 38)
+                {
+                    MessageBox.Show("Du hast Schulden! Du zahlst 100$");
+                    int P1money = Convert.ToInt32(Player1Money.Text) - 100;
+                    Player1Money.Text = "" + P1money;
+                }
+                else if (Convert.ToInt32(player1position.Text) == 39)
+                {
+                    StraßeBlau2.Visible = true;
+                }
+            }
+        }
+
+        void Gehalt()
+        {
+            MessageBox.Show("Gehalt: 200$");
+
+            if (playerTurn.Text == "Spieler 1")
+            {
+                int P1money = Convert.ToInt32(Player1Money.Text) + 200;
+                Player1Money.Text = "" + P1money;
+            }
+            else if (playerTurn.Text == "Spieler 2")
+            {
+                int P2money = Convert.ToInt32(Player2Money.Text) + 200;
+                Player2Money.Text = "" + P2money;
+            }
+        }
+
+        Random eCard = new Random();
+        Random gCard = new Random();
+        void ShowEventcardE()
+        {
+            int ereignis = eCard.Next(1, 6);
+
+            if(ereignis == 1)
+            {
+                Ereignisfeld1.Visible = true;
+            }
+            else if (ereignis == 2)
+            {
+                Ereignisfeld2.Visible = true;
+            }
+            else if (ereignis == 3)
+            {
+                Ereignisfeld3.Visible = true;
+            }
+            else if (ereignis == 4)
+            {
+                Ereignisfeld4.Visible = true;
+            }
+            else if (ereignis == 5)
+            {
+                Ereignisfeld5.Visible = true;
+            }
+            else if (ereignis == 6)
+            {
+                Ereignisfeld6.Visible = true;
+            }
+        }
+
+        void HideEventcardE()
+        {
+            Ereignisfeld1.Visible = false;
+            Ereignisfeld2.Visible = false;
+            Ereignisfeld3.Visible = false;
+            Ereignisfeld4.Visible = false;
+            Ereignisfeld5.Visible = false;
+            Ereignisfeld6.Visible = false;
+        }
+
+        void ShowEventcardG()
+        {
+            int gemeinschaft = gCard.Next(1, 6);
+
+            if(gemeinschaft == 1)
+            {
+                Gemeinschaftfeld1.Visible = true;
+            }
+            else if (gemeinschaft == 2)
+            {
+                Gemeinschaftsfeld2.Visible = true;
+            }
+            else if (gemeinschaft == 3)
+            {
+                Gemeinschaftsfeld3.Visible = true;
+            }
+            else if (gemeinschaft == 4)
+            {
+                Gemeinschaftsfeld4.Visible = true;
+            }
+            else if (gemeinschaft == 5)
+            {
+                Gemeinschaftsfeld5.Visible = true;
+            }
+            else if (gemeinschaft == 6)
+            {
+                Gemeinschaftsfeld6.Visible = true;
+            }
+        }
+
+        void HideEventcardG()
+        {
+            Gemeinschaftfeld1.Visible = false;
+            Gemeinschaftsfeld2.Visible = false;
+            Gemeinschaftsfeld3.Visible = false;
+            Gemeinschaftsfeld4.Visible = false;
+            Gemeinschaftsfeld5.Visible = false;
+            Gemeinschaftsfeld6.Visible = false;
+        }
+
+        bool besitzBraun1 = false;
+        bool besitzBraun2 = false;
+        bool besitzTürkis1 = false;
+        bool besitzTürkis2 = false;
+        bool besitzTürkis3 = false;
+        bool besitzPink1 = false;
+        bool besitzPink2 = false;
+        bool besitzPink3 = false;
+        bool besitzOrange1 = false;
+        bool besitzOrange2 = false;
+        bool besitzOrange3 = false;
+        bool besitzRot1 = false;
+        bool besitzRot2 = false;
+        bool besitzRot3 = false;
+        bool besitzGelb1 = false;
+        bool besitzGelb2 = false;
+        bool besitzGelb3 = false;
+        bool besitzGrün1 = false;
+        bool besitzGrün2 = false;
+        bool besitzGrün3 = false;
+        bool besitzBlau1 = false;
+        bool besitzBlau2 = false;
+        bool besitzSüdbahnhof = false;
+        bool besitzWestbahnhof = false;
+        bool besitzNordbahnhof = false;
+        bool besitzHauptbahnhof = false;
+        bool besitzWasserwerk = false;
+        bool besitzElekrizitätswerk = false;
+
+        private void bttnBuy_Click(object sender, EventArgs e) //Der Spieler kann die Straße kaufen.
+        {
+            if(StraßeBraun1.Visible) //Prüft welche Straße sichtbar ist.
+            {
+                if(playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 60 || besitzBraun1 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 60;
+                        Player1Money.Text = "" + kauf;
+                        besitzBraun1 = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("StraßeBraun1");
+                        lblP1Braun1.BackColor = Color.Brown;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if(playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 60 || besitzBraun1 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 60;
+                        Player2Money.Text = "" + kauf;
+                        besitzBraun1 = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("StraßeBraun1");
+                        lblP2Braun1.BackColor = Color.Brown;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if(StraßeBraun2.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 60 || besitzBraun2 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 60;
+                        Player1Money.Text = "" + kauf;
+                        besitzBraun1 = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("StraßeBraun2");
+                        lblP1Braun2.BackColor = Color.Brown;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 60 || besitzBraun2 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 60;
+                        Player2Money.Text = "" + kauf;
+                        besitzBraun1 = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("StraßeBraun2");
+                        lblP2Braun2.BackColor = Color.Brown;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if(StraßeTürkis1.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 100 || besitzTürkis1 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 100;
+                        Player1Money.Text = "" + kauf;
+                        besitzTürkis1 = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("StraßeTürkis1");
+                        lblP1Türkis1.BackColor = Color.PaleTurquoise;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 100 || besitzTürkis1 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 100;
+                        Player2Money.Text = "" + kauf;
+                        besitzTürkis1 = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("StraßeTürkis1");
+                        lblP2Türkis1.BackColor = Color.PaleTurquoise;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (StraßeTürkis2.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 100 || besitzTürkis2 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 100;
+                        Player1Money.Text = "" + kauf;
+                        besitzTürkis2 = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("StraßeTürkis2");
+                        lblP1Türkis2.BackColor = Color.PaleTurquoise;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 100 || besitzTürkis2 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 100;
+                        Player2Money.Text = "" + kauf;
+                        besitzTürkis2 = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("StraßeTürkis2");
+                        lblP2Türkis2.BackColor = Color.PaleTurquoise;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (StraßeTürkis3.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 120 || besitzTürkis3 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 120;
+                        Player1Money.Text = "" + kauf;
+                        besitzTürkis3 = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("StraßeTürkis3");
+                        lblP1Türkis3.BackColor = Color.PaleTurquoise;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 120 || besitzTürkis3 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 120;
+                        Player2Money.Text = "" + kauf;
+                        besitzTürkis3 = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("StraßeTürkis3");
+                        lblP2Türkis3.BackColor = Color.PaleTurquoise;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (StraßePink1.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 140 || besitzPink1 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 140;
+                        Player1Money.Text = "" + kauf;
+                        besitzPink1 = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("StraßePink1");
+                        lblP1Pink1.BackColor = Color.Pink;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 140 || besitzPink1 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 140;
+                        Player2Money.Text = "" + kauf;
+                        besitzPink1 = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("StraßePink1");
+                        lblP2Pink1.BackColor = Color.Pink;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (StraßePink2.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 140 || besitzPink2 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 140;
+                        Player1Money.Text = "" + kauf;
+                        besitzPink2 = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("StraßePink2");
+                        lblP1Pink2.BackColor = Color.Pink;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 140 || besitzPink2 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 140;
+                        Player2Money.Text = "" + kauf;
+                        besitzPink2 = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("StraßePink2");
+                        lblP2Pink2.BackColor = Color.Pink;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (StraßePink3.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 160 || besitzPink3 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 160;
+                        Player1Money.Text = "" + kauf;
+                        besitzPink3 = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("StraßePink3");
+                        lblP1Pink3.BackColor = Color.Pink;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 160 || besitzPink3 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 160;
+                        Player2Money.Text = "" + kauf;
+                        besitzPink3 = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("StraßePink3");
+                        lblP2Pink3.BackColor = Color.Pink;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (StraßeOrange1.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 180 || besitzOrange1 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 180;
+                        Player1Money.Text = "" + kauf;
+                        besitzOrange1 = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("StraßeOrange1");
+                        lblP1Orange1.BackColor = Color.Orange;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 180 || besitzOrange1 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 180;
+                        Player2Money.Text = "" + kauf;
+                        besitzOrange1 = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("StraßeOrange1");
+                        lblP2Orange1.BackColor = Color.Orange;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (StraßeOrange2.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 180 || besitzOrange2 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 180;
+                        Player1Money.Text = "" + kauf;
+                        besitzOrange2 = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("StraßeOrange2");
+                        lblP1Orange2.BackColor = Color.Orange;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 180 || besitzOrange2 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 180;
+                        Player2Money.Text = "" + kauf;
+                        besitzOrange2 = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("StraßeOrange2");
+                        lblP2Orange2.BackColor = Color.Orange;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (StraßeOrange3.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 200 || besitzOrange3 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 200;
+                        Player1Money.Text = "" + kauf;
+                        besitzOrange3 = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("StraßeOrange3");
+                        lblP1Orange3.BackColor = Color.Orange;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 200 || besitzOrange3 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 200;
+                        Player2Money.Text = "" + kauf;
+                        besitzOrange3 = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("StraßeOrange3");
+                        lblP2Orange3.BackColor = Color.Orange;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (StraßeRot1.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 220 || besitzRot1 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 220;
+                        Player1Money.Text = "" + kauf;
+                        besitzRot1 = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("StraßeRot1");
+                        lblP1Rot1.BackColor = Color.Red;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 220 || besitzRot1 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 220;
+                        Player2Money.Text = "" + kauf;
+                        besitzRot1 = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("StraßeRot1");
+                        lblP2Rot1.BackColor = Color.Red;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (StraßeRot2.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 220 || besitzRot2 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 220;
+                        Player1Money.Text = "" + kauf;
+                        besitzRot2 = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("StraßeRot2");
+                        lblP1Rot2.BackColor = Color.Red;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 220 || besitzRot2 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 220;
+                        Player2Money.Text = "" + kauf;
+                        besitzRot2 = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("StraßeRot2");
+                        lblP2Rot2.BackColor = Color.Red;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (StraßeRot3.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 240 || besitzRot3 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 240;
+                        Player1Money.Text = "" + kauf;
+                        besitzRot3 = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("StraßeRot3");
+                        lblP1Rot3.BackColor = Color.Red;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 240 || besitzRot3 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 240;
+                        Player2Money.Text = "" + kauf;
+                        besitzRot3 = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("StraßeRot3");
+                        lblP2Rot3.BackColor = Color.Red;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (StraßeGelb1.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 260 || besitzGelb1 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 260;
+                        Player1Money.Text = "" + kauf;
+                        besitzGelb1 = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("StraßeGelb1");
+                        lblP1Gelb1.BackColor = Color.Yellow;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 260 || besitzGelb1 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 260;
+                        Player2Money.Text = "" + kauf;
+                        besitzGelb1 = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("StraßeGelb1");
+                        lblP2Gelb1.BackColor = Color.Yellow;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (StraßeGelb2.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 260 || besitzGelb2 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 260;
+                        Player1Money.Text = "" + kauf;
+                        besitzGelb2 = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("StraßeGelb2");
+                        lblP1Gelb2.BackColor = Color.Yellow;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 260 || besitzGelb2 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 260;
+                        Player2Money.Text = "" + kauf;
+                        besitzGelb2 = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("StraßeGelb2");
+                        lblP2Gelb2.BackColor = Color.Yellow;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (StraßeGelb3.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 280 || besitzGelb3 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 280;
+                        Player1Money.Text = "" + kauf;
+                        besitzGelb3 = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("StraßeGelb3");
+                        lblP1Gelb3.BackColor = Color.Yellow;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 280 || besitzGelb3 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 280;
+                        Player2Money.Text = "" + kauf;
+                        besitzGelb3 = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("StraßeGelb3");
+                        lblP2Gelb3.BackColor = Color.Yellow;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (StraßeGreen1.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 300 || besitzGrün1 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 300;
+                        Player1Money.Text = "" + kauf;
+                        besitzGrün1 = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("StraßeGreen1");
+                        lblP1Grün1.BackColor = Color.Green;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 300 || besitzGrün1 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 300;
+                        Player2Money.Text = "" + kauf;
+                        besitzGrün1 = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("StraßeGreen1");
+                        lblP2Grün1.BackColor = Color.Green;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (StraßeGreen2.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 300 || besitzGrün2 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 300;
+                        Player1Money.Text = "" + kauf;
+                        besitzGrün2 = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("StraßeGreen2");
+                        lblP1Grün2.BackColor = Color.Green;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 300 || besitzGrün2 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 300;
+                        Player2Money.Text = "" + kauf;
+                        besitzGrün2 = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("StraßeGreen2");
+                        lblP2Grün2.BackColor = Color.Green;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (StraßeGreen3.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 320 || besitzGrün3 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 320;
+                        Player1Money.Text = "" + kauf;
+                        besitzGrün3 = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("StraßeGreen3.Visible");
+                        lblP1Grün3.BackColor = Color.Green;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 320 || besitzGrün3 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 320;
+                        Player2Money.Text = "" + kauf;
+                        besitzGrün3 = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("StraßeGreen3.Visible");
+                        lblP2Grün3.BackColor = Color.Green;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (StraßeBlau1.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 350 || besitzBlau1 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 350;
+                        Player1Money.Text = "" + kauf;
+                        besitzBlau1 = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("StraßeBlau1");
+                        lblP1Blau1.BackColor = Color.Blue;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 350 || besitzBlau1 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 350;
+                        Player2Money.Text = "" + kauf;
+                        besitzBlau1 = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("StraßeBlau1");
+                        lblP2Blau1.BackColor = Color.Blue;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (StraßeBlau2.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 400 || besitzBlau2 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 400;
+                        Player1Money.Text = "" + kauf;
+                        besitzBlau2 = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("StraßeBlau2");
+                        lblP1Blau2.BackColor = Color.Blue;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 400 || besitzBlau2 == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 400;
+                        Player2Money.Text = "" + kauf;
+                        besitzBlau2 = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("StraßeBlau2");
+                        lblP2Blau2.BackColor = Color.Blue;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (Elektrizitätswerk.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 150 || besitzElekrizitätswerk == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 150;
+                        Player1Money.Text = "" + kauf;
+                        besitzElekrizitätswerk = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("Elektrizitätswerk");
+                        lblP1Elektrizitätwerk.BackColor = Color.White;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 150 || besitzElekrizitätswerk == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 150;
+                        Player2Money.Text = "" + kauf;
+                        besitzElekrizitätswerk = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("Elektrizitätswerk");
+                        lblP2Elektrizitätwerk.BackColor = Color.White;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (Wasserwerk.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 150 || besitzWasserwerk == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 150;
+                        Player1Money.Text = "" + kauf;
+                        besitzWasserwerk = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("Wasserwerk");
+                        lblP1Wasserwerk.BackColor = Color.White;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 150 || besitzWasserwerk == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 150;
+                        Player2Money.Text = "" + kauf;
+                        besitzWasserwerk = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("Wasserwerk");
+                        lblP1Wasserwerk.BackColor = Color.White;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (Südbahnhof.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 200 || besitzSüdbahnhof == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 200;
+                        Player1Money.Text = "" + kauf;
+                        besitzSüdbahnhof = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("Südbahnhof");
+                        lblP1Südbahnhof.BackColor = Color.Black;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 200 || besitzSüdbahnhof == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 200;
+                        Player2Money.Text = "" + kauf;
+                        besitzSüdbahnhof = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("Südbahnhof");
+                        lblP2Südbahnhof.BackColor = Color.Black;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (Westbahnhof.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 200 || besitzWestbahnhof == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 200;
+                        Player1Money.Text = "" + kauf;
+                        besitzWestbahnhof = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("Westbahnhof");
+                        lblP1Westbahnhof.BackColor = Color.Black;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 200 || besitzWestbahnhof == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 200;
+                        Player2Money.Text = "" + kauf;
+                        besitzWestbahnhof = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("Westbahnhof");
+                        lblP2Westbahnhof.BackColor = Color.Black;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (Nordbahnhof.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 200 || besitzNordbahnhof == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 200;
+                        Player1Money.Text = "" + kauf;
+                        besitzNordbahnhof = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("Nordbahnhof");
+                        lblP1Nordbahnhof.BackColor = Color.Black;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 200 || besitzNordbahnhof == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 200;
+                        Player2Money.Text = "" + kauf;
+                        besitzNordbahnhof = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("Nordbahnhof");
+                        lblP2Nordbahnhof.BackColor = Color.Black;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+            else if (Hauptbahnhof.Visible)
+            {
+                if (playerTurn.Text == "Spieler 1") //Prüft welcher Spieler auf der Straße ist.
+                {
+                    if (Convert.ToInt32(Player1Money.Text) == 200 || besitzHauptbahnhof == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player1Money.Text) - 200;
+                        Player1Money.Text = "" + kauf;
+                        besitzHauptbahnhof = true;
+                        MessageBox.Show("Spieler 1 besitzt jetzt eine neue Straße!");
+                        spieler1Besitz.Add("Hauptbahnhof");
+                        lblP1Hauptbahnhof.BackColor = Color.Black;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+                else if (playerTurn.Text == "Spieler 2")
+                {
+                    if (Convert.ToInt32(Player2Money.Text) == 200 || besitzHauptbahnhof == false) //Prüft ob der Spieler das Geld hat und ob die Straße verfügbar ist.
+                    {
+                        int kauf = Convert.ToInt32(Player2Money.Text) - 200;
+                        Player2Money.Text = "" + kauf;
+                        besitzHauptbahnhof = true;
+                        MessageBox.Show("Spieler 2 besitzt jetzt eine neue Straße!");
+                        spieler2Besitz.Add("Hauptbahnhof");
+                        lblP1Hauptbahnhof.BackColor = Color.Black;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Du hast entweder nicht genung Geld, oder dieses Gebäude besitzt schon jemand!");
+                    }
+                }
+            }
+        }
+
+        void PlayerPaysRent() //Der Spieler der aud das Grundstück des anderen Spielers betritt, muss Miete Zahlen.
+        {
+            if (playerTurn.Text == "Spieler 1")
+            {
+                if (spieler1Besitz.Contains("StraßeBraun1") && StraßeBraun1.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 2;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 2;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeBraun2") && StraßeBraun2.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 2;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 2;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeTürkis1") && StraßeTürkis1.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 6;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 6;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeTürkis2") && StraßeTürkis2.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 6;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 6;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeTürkis3") && StraßeTürkis3.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 6;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 6;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßePink1") && StraßePink1.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 10;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 10;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßePink2") && StraßePink1.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 10;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 10;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßePink3") && StraßePink3.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 12;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 12;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeOrange1") && StraßeOrange1.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 14;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 14;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeOrange2") && StraßeOrange2.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 14;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 14;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeOrange3") && StraßeOrange3.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 16;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 16;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeRot1") && StraßeRot1.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 18;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 18;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeRot2") && StraßeRot2.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 18;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 18;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeRot3") && StraßeRot3.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 20;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 20;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeGelb1") && StraßeGelb1.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 22;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 22;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeGelb2") && StraßeGelb2.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 22;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 22;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeGelb3") && StraßeGelb3.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 24;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 24;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeGrün1") && StraßeGreen1.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 26;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 26;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeGrün2") && StraßeGreen2.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 26;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 26;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeGrün3") && StraßeGreen3.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 28;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 28;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeBlau1") && StraßeBlau1.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 35;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 35;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeBlau2") && StraßeBlau2.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 70;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 70;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("Nordbahnhof") && Nordbahnhof.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 25;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 25;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("Westbahnhof") && Westbahnhof.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 25;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 25;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("Südbahnhof") && Südbahnhof.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 25;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 25;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("Hauptbahnhof") && Hauptbahnhof.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 25;
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 25;
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("Elektrizitätswerk") && Elektrizitätswerk.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 4 * Convert.ToInt32(showFeldNum.Text);
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 4 * Convert.ToInt32(showFeldNum.Text);
+                    Player1Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("Wasserwerk") && Wasserwerk.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player2Money.Text) - 4 * Convert.ToInt32(showFeldNum.Text);
+                    Player2Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 4 * Convert.ToInt32(showFeldNum.Text);
+                    Player1Money.Text = "" + verdienst;
+                }
+
+            }
+            else if (playerTurn.Text == "Spieler 2")
+            {
+                if (spieler1Besitz.Contains("StraßeBraun1") && StraßeBraun1.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 2;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 2;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeBraun2") && StraßeBraun2.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 2;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 2;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeTürkis1") && StraßeTürkis1.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 6;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 6;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeTürkis2") && StraßeTürkis2.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 6;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 6;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeTürkis3") && StraßeTürkis3.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 6;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 6;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßePink1") && StraßePink1.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 10;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 10;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßePink2") && StraßePink1.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 10;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 10;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßePink3") && StraßePink3.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 12;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 12;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeOrange1") && StraßeOrange1.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 14;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 14;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeOrange2") && StraßeOrange2.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 14;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 14;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeOrange3") && StraßeOrange3.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 16;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 16;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeRot1") && StraßeRot1.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 18;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 18;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeRot2") && StraßeRot2.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 18;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 18;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeRot3") && StraßeRot3.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 20;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 20;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeGelb1") && StraßeGelb1.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 22;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 22;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeGelb2") && StraßeGelb2.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 22;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 22;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeGelb3") && StraßeGelb3.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 24;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 24;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeGrün1") && StraßeGreen1.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 26;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 26;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeGrün2") && StraßeGreen2.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 26;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 26;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeGrün3") && StraßeGreen3.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 28;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 28;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeBlau1") && StraßeBlau1.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 35;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 35;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("StraßeBlau2") && StraßeBlau2.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 70;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 70;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("Nordbahnhof") && Nordbahnhof.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 25;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 25;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("Westbahnhof") && Westbahnhof.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 25;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 25;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("Südbahnhof") && Südbahnhof.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 25;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 25;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("Hauptbahnhof") && Hauptbahnhof.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 25;
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 25;
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("Elektrizitätswerk") && Elektrizitätswerk.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 4 * Convert.ToInt32(showFeldNum.Text);
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 4 * Convert.ToInt32(showFeldNum.Text);
+                    Player2Money.Text = "" + verdienst;
+                }
+                else if (spieler1Besitz.Contains("Wasserwerk") && Wasserwerk.Visible)
+                {
+                    MessageBox.Show("Sie müssen Miete zahlen!");
+                    int Miete = Convert.ToInt32(Player1Money.Text) - 4 * Convert.ToInt32(showFeldNum.Text);
+                    Player1Money.Text = "" + Miete;
+                    int verdienst = Convert.ToInt32(Player1Money.Text) + 4 * Convert.ToInt32(showFeldNum.Text);
+                    Player2Money.Text = "" + verdienst;
+                }
+
+            }
+        }
+        private void bttnMenu_Click(object sender, EventArgs e)
+        {
+            mainmenu.Show();
+        }
+
+        private void bttnBankrott_Click(object sender, EventArgs e) //Spieler geht Bankrott
+        {
+            if (playerTurn.Text == "Spieler 1")  //Prüft welcher Spieler dran ist.
+            {
+                MessageBox.Show("Wer auch immer Spieler 1 ist, also mir wäre diese Niederlage echt PEINLICH!");
+                MessageBox.Show("Schäm dich!");
+                Close();
+            }
+            else if (playerTurn.Text == "Spieler 2")
+            {
+                MessageBox.Show("Wer auch immer Spieler 2 ist, also mir wäre diese Niederlage echt PEINLICH!");
+                MessageBox.Show("Schäm dich!");
+                Close();
+            }
+        }
+    }
+}
